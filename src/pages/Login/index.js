@@ -11,6 +11,8 @@ export default function Login() {
         <p>hello my world!</p>
       </Title>
       <Paragraph>Hey, could you style me?</Paragraph>
+
+      <button type="submit">Send</button>
     </Container>
   );
 }
