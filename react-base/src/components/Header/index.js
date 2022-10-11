@@ -10,7 +10,7 @@ export default function Header() {
       <Link to="/">
         <FaHome size="2.4rem" />
       </Link>
-      <Link to="/Login">
+      <Link to="/">
         <FaUserAlt size="2rem" />
       </Link>
       <Link to="/">
