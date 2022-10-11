@@ -8,7 +8,7 @@ export const Nav = styled.nav`
   justify-content: center;
   align-items: center;
 
-  p {
+  a {
     color: #fff;
     margin: 0 1rem 0 0;
     font-weight: bold;
