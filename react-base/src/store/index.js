@@ -4,7 +4,7 @@ const initialState = {
   clickedButton: false,
 };
 
-const reducer = (action, state = initialState) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'CLICKED_BUTTON': {
       const newState = { ...state };

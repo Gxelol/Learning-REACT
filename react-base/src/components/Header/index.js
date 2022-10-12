@@ -19,7 +19,7 @@ export default function Header() {
       <Link to="/">
         <FaSignInAlt size="2.4rem" />
       </Link>
-      {clickedButton ? 'clicked' : 'nothing'}
+      {clickedButton ? 'Clicked' : 'Not Clicked'}
     </Nav>
   );
 }

@@ -17,7 +17,7 @@ export default function Login() {
 
   return (
     <Container>
-      <Title isRed={false}>
+      <Title>
         I will do my Login
         <p>hello my world!</p>
       </Title>
