@@ -5,3 +5,9 @@
   background: #eee;
   padding: 3rem;
 }
+
+.error-p {
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: bold;
+}

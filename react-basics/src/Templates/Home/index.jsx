@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { loadPosts } from '../../utils/loadPosts'
 import { Posts } from '../../components/Posts'
 import { Button } from '../../components/Button';
+import { SearchInput } from '../../components/SearchInput';
 
 // LIFECYCLE METHODS
 
@@ -14,12 +15,13 @@ class App extends Component {
       posts: [],
       allPosts: [],
       page: 0,
-      postsPerClick: 10
+      postsPerClick: 10,
+      searchValue: '',
     };
   }
 
-  async componentDidMount() {
-    await this.loadPosts();
+  componentDidMount() {
+   this.loadPosts();
   }
 
   loadPosts = async () => {
@@ -45,18 +47,47 @@ class App extends Component {
     this.setState({ posts, page: nextPage })
   }
 
+  handleChange = (e) => {
+    const { value } = e.target; 
+    this.setState({ searchValue: value })
+  }
+
   render() {
-    const { posts, page, postsPerClick, allPosts } = this.state;
+    const { posts, page, postsPerClick, allPosts, searchValue } = this.state;
     const noMorePosts = page + postsPerClick >= allPosts.length;
+    
+    const filteredPosts = !!searchValue ? 
+    posts.filter(post => {
+      return post.title.toLowerCase().includes(
+        searchValue.toLowerCase()
+      );
+    }) 
+    : posts;
 
     return (
       <section className='container'>
-        <Posts posts={posts}/>
-        <Button 
-        text="Load more posts" 
-        onClick={this.loadMorePosts}
-        disabled={noMorePosts}
+        
+        <SearchInput 
+        actionFn={this.handleChange}
+        inputValue={searchValue}
         />
+
+        {filteredPosts.length > 0 && (
+          <Posts posts={filteredPosts}/>
+        )}
+        {filteredPosts.length === 0 && (
+          <p className='error-p'>No posts found.</p>
+        )}
+        
+        <>
+          {!searchValue && (
+            <Button 
+            text="Load more posts" 
+            onClick={this.loadMorePosts}
+            disabled={noMorePosts}
+            />
+          )}
+        </>
       </section>
     );
   }
