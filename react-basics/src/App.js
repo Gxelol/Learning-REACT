@@ -1,11 +1,14 @@
 import './App.css';
 import { Component } from 'react';
 
+// LIFECYCLE METHODS
+
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      counter: 0,
       posts: [
         {
           id: 1,
@@ -25,11 +28,35 @@ class App extends Component {
       ]
     };
   }
+  timeoutUpdate = null;
+
+  componentDidMount() {
+    this.handleTimeout();
+  }
+
+  componentDidUpdate() {
+    this.handleTimeout();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutUpdate);
+  }
+
+  handleTimeout = () => {
+    const { posts, counter } = this.state;
+    posts[0].title = 'Changed';
+
+    this.timeoutUpdate = setTimeout(() => {
+      this.setState({ posts, counter: counter + 1});
+    }, 3000);
+  }
+
   render() {
-    const { posts } = this.state;
+    const { posts, counter } = this.state;
 
     return (
       <div className="App">
+        <h1>{counter}</h1>
         {posts.map((post) => (
           <div key={post.id}>
             <h1>{post.title}</h1>
