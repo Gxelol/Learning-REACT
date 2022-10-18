@@ -1,6 +1,9 @@
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import {
+  render, screen, waitForElementToBeRemoved,
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Home } from '.';
 
 const handlers = [
@@ -56,9 +59,36 @@ describe('<Home />', () => {
     expect(input).toBeInTheDocument();
 
     const images = screen.getAllByRole('img');
-    expect(images).toHaveLength(3);
+    expect(images).toHaveLength(2);
 
     const button = screen.getByRole('button', { name: /load more posts/i });
     expect(button).toBeInTheDocument();
+  });
+
+  it('should search for posts', async () => {
+    render(<Home />);
+    const noPostsFound = screen.queryByText('No posts found.');
+
+    expect.assertions(10);
+
+    await waitForElementToBeRemoved(noPostsFound);
+
+    const input = screen.getByPlaceholderText(/search here/i);
+    expect(screen.getByRole('heading', { name: 'title1 1' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'title2 2' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'title3 3' })).not.toBeInTheDocument();
+
+    await userEvent.type(input, 'title1');
+    expect(screen.getByRole('heading', { name: 'title1 1' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'title2 2' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'title3 3' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'title1 1' })).toBeInTheDocument();
+
+    await userEvent.clear(input);
+    expect(screen.getByRole('heading', { name: 'title1 1' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'title2 2' })).toBeInTheDocument();
+
+    await userEvent.type(input, 'this is not in the posts');
+    expect(screen.getByText('No posts found.')).toBeInTheDocument();
   });
 });
