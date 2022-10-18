@@ -9,7 +9,7 @@ export function Home() {
   const [posts, setPosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(0);
-  const [postsPerClick] = useState(10);
+  const [postsPerClick] = useState(3);
   const [searchValue, setSearchValue] = useState('');
 
   const noMorePosts = page + postsPerClick >= allPosts.length;

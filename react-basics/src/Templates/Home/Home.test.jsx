@@ -18,14 +18,14 @@ const handlers = [
         id: 2,
         title: 'title2',
         body: 'body3',
-        url: 'img1.jpg',
+        url: 'img2.jpg',
       },
       {
         userId: 3,
         id: 3,
         title: 'title3',
         body: 'body3',
-        url: 'img1.jpg',
+        url: 'img3.jpg',
       },
     ]));
   }),
@@ -44,11 +44,21 @@ describe('<Home />', () => {
     server.close();
   });
 
-  it('should render input, posts and loadMore button', async () => {
+  it('should render button, posts and loadMore button', async () => {
     render(<Home />);
     const noPostsFound = screen.queryByText('No posts found.');
 
+    expect.assertions(3);
+
     await waitForElementToBeRemoved(noPostsFound);
-    screen.debug();
+
+    const input = screen.getByPlaceholderText(/search here/i);
+    expect(input).toBeInTheDocument();
+
+    const images = screen.getAllByRole('img');
+    expect(images).toHaveLength(3);
+
+    const button = screen.getByRole('button', { name: /load more posts/i });
+    expect(button).toBeInTheDocument();
   });
 });
