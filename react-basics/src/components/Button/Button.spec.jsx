@@ -13,13 +13,13 @@ describe('<Button />', () => {
     expect(button).toBeInTheDocument();
   });
 
-  it('should call the function onClick when button clicked', () => {
+  it('should call the function onClick when button clicked', async () => {
     const fn = jest.fn();
     render(<Button text="Load More" onClick={fn} />);
 
     const button = screen.getByRole('button', { name: /load more/i });
 
-    userEvent.click(button);
+    await userEvent.click(button);
     // fireEvent.click(button);
 
     expect(fn).toHaveBeenCalledTimes(1);

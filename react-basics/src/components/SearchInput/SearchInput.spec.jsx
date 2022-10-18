@@ -1,5 +1,4 @@
-import { type } from '@testing-library/user-event/dist/type';
-
+import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { SearchInput } from '.';
 
@@ -12,14 +11,14 @@ describe('<SearchInput />', () => {
     expect(input.value).toBe('testing');
   });
 
-  it('should call actionFn function on each key pressed', () => {
+  it('should call actionFn function on each key pressed', async () => {
     const fn = jest.fn();
     render(<SearchInput actionFn={fn} inputValue="" />);
 
     const input = screen.getByPlaceholderText(/search here/i);
     const value = 'the value';
 
-    type(input, value);
+    await userEvent.type(input, value);
 
     expect(input.value).toBe('');
     expect(fn).toHaveBeenCalledTimes(value.length);
