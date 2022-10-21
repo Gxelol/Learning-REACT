@@ -1,46 +1,72 @@
-import { useDebugValue, useEffect, useState } from 'react';
-import './styles.css';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-const useMediaMatch = (queryValue, initialValue = false) => {
-  const [match, setMatch] = useState(initialValue);
+export const ReactHooks = () => {
+  console.log('%cCHILD RENDER STARTING...', 'color: #36c236');
 
-  useDebugValue(`Query: ${queryValue}`, name => {
-    return name + 'modified';
-  })
+  // Lazy Initializer #1
+  const [state1, setState1] = useState(() => {
+    const state = new Date().toLocaleDateString();
+    console.log('%cState Lazy initializer - (useState + InitialValue) = ' + state, 'color: #36c236');
+    return state;
+  });
+  const renders = useRef(0);
 
   useEffect(() => {
-    let isMounted = true;
-    const matchMedia = window.matchMedia(queryValue);
+    console.log('%cuseEffect (UPDATE state1) ' + state1, 'color: #ffed48');
+  }, [state1]);
 
-    const handleChange = () => {
-      if (!isMounted) return;
-      setMatch(!!matchMedia.matches);
-    }
-
-    matchMedia.addEventListener('change', handleChange);
-    setMatch(!!matchMedia.matches);
+  useEffect(() => {
+    console.log('%cuseEffect -> No Dependencies', 'color: #ffed48');
+    renders.current += 1;
 
     return () => {
-      isMounted = false;
-      matchMedia.removeEventListener('change', handleChange);
-    }
-  }, [queryValue])
+      console.log('%cuseEffect (Cleanup) -> No Dependencies', 'color: #ffed48');
+    };
+  });
 
-  return match;
+  useEffect(() => {
+    const listener = () => console.log('Listener...');
+    console.log('%cuseEffect -> Empty dependencies', 'color: #ffed48');
+
+    return () => {
+      console.log('%cuseEffect (Cleanup) -> Empty dependencies', 'color: #ffed48');
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    console.log('%cuseLayoutEffect', 'color: #ff3a6b');
+
+    return () => {
+      console.log('%cuseLayoutEffect (Cleanup)', 'color: #ff3a6b');
+    };
+  });
+
+  console.log('%cCHILD RENDER ' + renders.current + ' ENDING...', 'color: #36c236');
+  return (
+    <div onClick={() => setState1(new Date().toLocaleString('pt-br'))} style={{ fontSize: '60px' }}>
+      State: {state1}
+    </div>
+  );
 };
 
 export const App = () => {
-  const enormous = useMediaMatch('(min-width: 1280px)');
-  const huge = useMediaMatch('(max-width: 1279px) and (min-width: 980px)');
-  const big = useMediaMatch('(max-width: 979px) and (min-width: 768px)');
-  const medium = useMediaMatch('(max-width: 767px) and (min-width: 321px)');
-  const small = useMediaMatch('(max-width: 320px)');
-  const background = enormous? 'darkblue' : huge? 'yellow' : big? 'red' : medium? 'pink' : small? 'cyan' : null
-  const color = enormous? 'white' : huge? 'white' : big? 'white' : medium? 'white' : small? 'white' : null
+  const renders = useRef(0);
+
+  useEffect(() => {
+    renders.current += 1;
+  });
+
+  console.log(`%cPARENT RENDER ${renders.current} STARTING...`, 'color: #36c236');
+  const [show, setShow] = useState(false);
+  console.log('%cState Initializer - (useState + InitialValue) = ' + show, 'color: #36c236');
+  console.log(`%cPARENT RENDER ${renders.current} ENDING...`, 'color: #36c236');
 
   return (
-    <div style={{fontSize: '50px', background, color}}>
-      Hello World!
+    <div>
+      <p style={{ fontSize: '60px' }} onClick={() => setShow((s) => !s)}>
+        Show hooks
+      </p>
+      {show && <ReactHooks />}
     </div>
-  )
+  );
 };
