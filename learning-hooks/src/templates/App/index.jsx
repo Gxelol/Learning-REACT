@@ -6,6 +6,8 @@ export const App = () => {
   const divRef = useRef();
 
   useLayoutEffect(() => {
+    const now = Date.now();
+    while (Date.now() < now + 1500)
     divRef.current.scrollTop = divRef.current.scrollHeight;
   });
 
