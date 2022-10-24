@@ -1,41 +1,21 @@
-/* eslint-disable react/prop-types */
-import React, { Children, cloneElement, createContext, useContext, useState } from 'react';
+import React, { Suspense, useState } from 'react';
+// import LazyComponent from './lazy';
+// CODE-SPLITTING
 
-const s = {
-  style: {
-    fontSize: '44px',
-  },
-};
-
-const TurnOnOffContext = createContext();
-
-const TurnOnOff = ({ children }) => {
-  const [isOn, setIsOn] = useState(false);
-  const turnOn = () => setIsOn(s => !s);
-
-  return <TurnOnOffContext.Provider value={{ isOn, turnOn }}>{children}</TurnOnOffContext.Provider>
-};
-
-const On = ({ children }) => { 
-  const { isOn } = useContext(TurnOnOffContext);
-  return isOn ? children : null;
-}
-
-const Off = ({ children }) => {
-  const { isOn } = useContext(TurnOnOffContext)
-  return isOn ? null : children;
-}
-const TurnButton = ({ ...props }) => {
-  const { isOn, turnOn } = useContext(TurnOnOffContext);
-  return <button onClick={turnOn} {...props}>Turn {isOn ? 'OFF' : 'ON'}</button>
-};
+const loadComponent = () => import('./lazy');
+const LazyComponent = React.lazy(loadComponent);
 
 export const App = () => {
+  const [show, setShow] = useState(false)
+
   return (
-    <TurnOnOff>
-      <On></On>
-      <Off></Off>
-      <TurnButton {...s} ></TurnButton>
-    </TurnOnOff>
+    <div>
+      <button onMouseOver={loadComponent} onClick={() => setShow((s) => !s)}>
+        {show ? 'HIDE' : 'SHOW'}
+      </button>
+      <Suspense fallback={<p>Loading...</p>}>
+        {show && <LazyComponent />}
+      </Suspense>
+    </div>
   ) 
 };
