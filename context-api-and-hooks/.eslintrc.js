@@ -23,5 +23,8 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/function-component-definition': 'off',
     'default-case': 'off',
+    'import/no-cycle': 'off',
+    'arrow-body-style': 'off',
+    'react/jsx-no-constructed-context-values': 'off',
   },
 };
