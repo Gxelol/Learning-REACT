@@ -16,7 +16,7 @@ export const CountContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const actions = useRef(actionFactory(dispatch));
 
-  return <Context.Provider value={[state, actions]}>{children}</Context.Provider>;
+  return <Context.Provider value={[state, actions.current]}>{children}</Context.Provider>;
 };
 
 CountContextProvider.propTypes = {

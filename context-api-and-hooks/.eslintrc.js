@@ -25,6 +25,7 @@ module.exports = {
     'default-case': 'off',
     'import/no-cycle': 'off',
     'arrow-body-style': 'off',
+    'no-unused-vars': 'off',
     'react/jsx-no-constructed-context-values': 'off',
   },
 };
