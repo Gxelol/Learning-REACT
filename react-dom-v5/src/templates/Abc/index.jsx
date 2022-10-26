@@ -7,14 +7,6 @@ import {
 
 export const Abc = () => {
   const { slug, id } = useParams();
-  const location = useLocation();
-  const history = useHistory();
-
-  useEffect(() => {
-    setTimeout(() => {
-      history.push('/');
-    }, 4000);
-  }, [history]);
 
   return (
     <div>
