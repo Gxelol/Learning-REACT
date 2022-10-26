@@ -7,6 +7,7 @@ import { About } from './components/About'
 import { Menu } from './components/Menu'
 import { Posts } from './components/Posts'
 import { Page404 } from './components/Page404'
+import { Redirect } from './components/Redirect'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/about' element={<About />} exact />
         <Route path='/posts/:id' element={<Posts />} exact />
         <Route path='/posts' element={<Posts />} exact />
+        <Route path='/redirect' element={<Redirect />} exact/>
         <Route path='*' element={<Page404 />} />
       </Routes>
     </BrowserRouter>
